@@ -1,3 +1,4 @@
+
 # IPFS CID를 위한 온체인 접근 제어 SBT
 
 ## 개요
@@ -19,7 +20,7 @@
 
   * `contracts/Create SBT Using CID and Granting Permission.sol`: 접근 제어 로직이 포함된 핵심 SoulboundToken 스마트 컨트랙트입니다.
   * `scripts/deploy.ts`: 컨트랙트를 네트워크에 배포하는 스크립트입니다. 배포 후 `deployment-address.json`에 주소를 저장합니다.
-  * `scripts/interact.ts`: 배포된 컨트랙트와 상호작용하는 시나리오 스크립트입니다. (민팅 -\> 접근 요청 -\> 승인 -\> 데이터 조회)
+  * `scripts/interact.ts`: 배포된 컨트랙트와 상호작용하는 시나리오 스크립트입니다.
   * `hardhat.config.ts`: Hardhat 설정 파일. Sepolia 네트워크 및 배포/테스트 계정을 구성합니다.
   * `.env.examle`: 프로젝트 실행에 필요한 환경 변수 예시 파일입니다.
 
@@ -53,8 +54,20 @@
 
     성공 시, 프로젝트 루트에 `deployment-address.json` 파일이 생성되고 배포된 주소가 기록됩니다.
 
-5.  상호작용 스크립트 실행
-    `interact.ts` 스크립트를 실행하여 민팅부터 데이터 조회까지의 전체 워크플로를 테스트합니다.
+5.  테스트 CID 수정 (중요)
+    `scripts/interact.ts` 파일에는 테스트용으로 하드코딩된 IPFS CID가 있습니다.
+    이 스크립트를 실행하기 전에, `privateCID` 변수의 값을 본인이 테스트하려는 실제 IPFS CID로 직접 수정해야 합니다.
+
+    ```typescript
+    // scripts/interact.ts 에서
+    // ...
+    const tokenId = 1;
+    const privateCID = "bafkreiflumket2dclo4sjyvmi245tkl4mrse57j5z2ovujmgb3gi67hckq"; // 여기를 직접 수정하세요
+    // ...
+    ```
+
+6.  상호작용 스크립트 실행
+    CID를 수정한 후, `interact.ts` 스크립트를 실행하여 민팅부터 데이터 조회까지의 전체 워크플로를 테스트합니다.
 
     ```bash
     npx hardhat run scripts/interact.ts --network sepolia
